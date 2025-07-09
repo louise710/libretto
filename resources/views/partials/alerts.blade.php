@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    @if($errors->any()))
+    @if($errors->any())
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-octagon-fill me-2"></i>
             <strong>Whoops!</strong> There were some problems:

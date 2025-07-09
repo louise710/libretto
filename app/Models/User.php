@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -34,5 +35,19 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+    
+        public function createAuthToken()
+    {
+        $this->tokens()->delete(); 
+        return $this->createToken('auth-token', ['*'], now()->addDay())->plainTextToken;
+    }
+
+    public function getValidToken()
+    {
+        return $this->tokens()
+            ->where('name', 'auth-token')
+            ->where('expires_at', '>', now())
+            ->first();
     }
 }
